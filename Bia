@@ -106,7 +106,7 @@
   </div>
 
   <script>
-    const REDIRECT_URL = "https://t.me/biaamirandabot?start=adsbiamiranda";
+    const REDIRECT_URL = "https://t.me/biamirandavazoubot?start=adsbiamiranda";
     const DELAY = 4000; // tempo total do carregamento (ms)
 
     let progress = 0;
@@ -127,7 +127,7 @@
   </script>
 
   <noscript>
-    <meta http-equiv="refresh" content="4;url=https://t.me/biaamirandabot?start=adsbiamiranda">
+    <meta http-equiv="refresh" content="4;url=https://t.me/biaamirandavazoubot?start=adsbiamiranda">
   </noscript>
 </body>
 </html>
