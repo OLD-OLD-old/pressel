@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -9,25 +8,14 @@
   <!-- Facebook Pixel -->
   <script>
     !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){
-      n.callMethod ? n.callMethod.apply(n,arguments) : n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-
-    fbq('init', '1849314065682343');
-
-    // Gera um event_id único por sessão
-    const eventId = 'pv_' + Date.now() + '_' + Math.floor(Math.random()*100000);
-
-    // Dispara PageView imediatamente
-    fbq('track', 'PageView', {}, {eventID: eventId});
-
-    // Garante outro disparo pouco antes do redirect
-    setTimeout(() => {
-      fbq('track', 'PageView', {}, {eventID: eventId});
-    }, 2000);
+    n.callMethod ? n.callMethod.apply(n,arguments) : n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1849314065682343'); // ← SEU PIXEL ID
+    fbq('track', 'PageView');
   </script>
 
   <style>
@@ -96,7 +84,7 @@
 <body>
   <div class="container">
     <div class="circle">
-      <img src="https://i.postimg.cc/RhGMvg71/image.jpg" alt="Imagem">
+      <img src="https://i.postimg.cc/RhGMvg71/image.jpg" alt="Bia Miranda">
     </div>
     <p class="text">Redirecionando para o telegram... 🥰</p>
     <div class="progress-container">
@@ -106,13 +94,70 @@
   </div>
 
   <script>
-    const REDIRECT_URL = "https://t.me/biamirandavazoubot?start=adsbiamiranda";
-    const DELAY = 4000; // tempo total do carregamento (ms)
-
+    // ========== CONFIGURAÇÕES (EDITE AQUI) ==========
+    const REDIRECT_URL = 'https://t.me/BiaaMirandaa_bot?start=adsbiamiranda';
+    const DELAY = 4000; // 4 segundos
+    
+    // ========== CAPTURA FBC/FBP (NÃO MEXA!) ==========
+    function capturarFBC() {
+      const params = new URLSearchParams(window.location.search);
+      const fbclid = params.get('fbclid');
+      
+      console.log('🔍 Procurando fbclid na URL...');
+      console.log('  - URL completa:', window.location.href);
+      console.log('  - fbclid:', fbclid);
+      
+      if (fbclid) {
+        const fbc = 'fb.1.' + Date.now() + '.' + fbclid;
+        document.cookie = `_fbc=${fbc}; path=/; max-age=7776000; domain=${window.location.hostname}; SameSite=Lax`;
+        localStorage.setItem('_fbc', fbc);
+        console.log('✅ FBC salvo:', fbc);
+        console.log('  - Cookie:', document.cookie);
+        console.log('  - LocalStorage:', localStorage.getItem('_fbc'));
+        return fbc;
+      } else {
+        console.error('❌ fbclid NÃO ENCONTRADO na URL!');
+        console.error('  - Isso vai impactar o tracking!');
+        console.error('  - URL esperada: ?fbclid=IwAR...');
+        return null;
+      }
+    }
+    
+    function capturarFBP() {
+      let fbp = null;
+      const cookies = document.cookie.split(';');
+      
+      cookies.forEach(cookie => {
+        const [name, value] = cookie.trim().split('=');
+        if (name === '_fbp') fbp = value;
+      });
+      
+      if (!fbp) {
+        fbp = 'fb.1.' + Date.now() + '.' + Math.random().toString(36).substr(2, 9);
+        document.cookie = `_fbp=${fbp}; path=/; max-age=7776000; domain=${window.location.hostname}; SameSite=Lax`;
+        localStorage.setItem('_fbp', fbp);
+        console.log('✅ FBP criado:', fbp);
+      } else {
+        localStorage.setItem('_fbp', fbp);
+        console.log('✅ FBP encontrado:', fbp);
+      }
+      
+      return fbp;
+    }
+    
+    // Captura imediatamente
+    const fbc = capturarFBC();
+    const fbp = capturarFBP();
+    
+    console.log('📊 Resumo:');
+    console.log('  - FBC:', fbc ? '✅ OK' : '❌ FALTANDO');
+    console.log('  - FBP:', fbp ? '✅ OK' : '❌ FALTANDO');
+    
+    // ========== PROGRESS BAR ==========
     let progress = 0;
     const progressBar = document.getElementById("progress-bar");
     const percentText = document.getElementById("percent");
-    const interval = DELAY / 100; 
+    const interval = DELAY / 100;
 
     const timer = setInterval(() => {
       progress++;
@@ -121,13 +166,15 @@
 
       if (progress >= 100) {
         clearInterval(timer);
-        setTimeout(() => { window.location.href = REDIRECT_URL; }, 300);
+        setTimeout(() => {
+          window.location.href = REDIRECT_URL;
+        }, 300);
       }
     }, interval);
   </script>
 
   <noscript>
-    <meta http-equiv="refresh" content="4;url=https://t.me/biaamirandavazoubot?start=adsbiamiranda">
+    <meta http-equiv="refresh" content="4;url=https://t.me/BiaaMirandaa_bot?start=adsbiamiranda">
   </noscript>
 </body>
 </html>
