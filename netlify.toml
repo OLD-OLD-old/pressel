@@ -1,0 +1,13 @@
+[build]
+  functions = "netlify/functions"
+  publish = "."
+
+# Não precisa de redirects neste caso!
+# Ou se quiser, só para URLs específicas:
+[[redirects]]
+  from = "/bia"
+  to = "/Bia.html"
+  status = 200
+```
+
+---
