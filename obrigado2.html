@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compra Aprovada! 🎉</title>
+
+  <!-- Facebook Pixel -->
+  <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){
+    n.callMethod ? n.callMethod.apply(n,arguments) : n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1849314065682343'); // ← SEU PIXEL ID
+    fbq('track', 'PageView');
+  </script>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      text-align: center;
+      max-width: 500px;
+      width: 100%;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 3rem 2rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    .success-icon {
+      font-size: 5rem;
+      margin-bottom: 1rem;
+      animation: bounce 1s ease-in-out;
+    }
+    .title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .value-display {
+      font-size: 3rem;
+      font-weight: 900;
+      color: #FFD700;
+      margin: 1.5rem 0;
+    }
+    .message {
+      font-size: 1.15rem;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+    }
+    .cta-button {
+      background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
+      color: #1a1a1a;
+      border: none;
+      padding: 20px 50px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .cta-button:hover {
+      transform: translateY(-4px);
+    }
+    @keyframes bounce { 
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 
+      40% { transform: translateY(-20px); } 
+      60% { transform: translateY(-10px); } 
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="success-icon">🎉</div>
+    <h1 class="title">Pagamento Aprovado!</h1>
+    <div class="value-display">R$ 9,90</div>
+    <p class="message">
+      Clique no botão abaixo para entrar no grupo VIP!
+    </p>
+    <a href="https://t.me/+wqOtfVVBuhszY2Mx" class="cta-button">
+      🔥 Entrar no Grupo VIP
+    </a>
+  </div>
+
+  <script>
+    // ========== CONFIGURAÇÕES (EDITE AQUI) ==========
+    const VALOR_PRODUTO = 9.90;
+    const NOME_PRODUTO = 'VIP Bia Miranda ordem';
+    
+    // ========== NÃO MEXA DAQUI PRA BAIXO ==========
+    let purchaseEnviado = false;
+    
+    function getFacebookBrowserId() {
+      const cookies = document.cookie.split(';');
+      let fbp = null;
+      let fbc = null;
+      
+      console.log('🍪 Lendo cookies...');
+      console.log('  - Todos os cookies:', document.cookie);
+      
+      cookies.forEach(cookie => {
+        const [name, value] = cookie.trim().split('=');
+        if (name === '_fbp') fbp = value;
+        if (name === '_fbc') fbc = value;
+      });
+      
+      console.log('📊 Cookies Facebook:');
+      console.log('  - FBP do cookie:', fbp);
+      console.log('  - FBC do cookie:', fbc);
+      
+      if (!fbc) {
+        fbc = localStorage.getItem('_fbc');
+        console.log('  - FBC do localStorage:', fbc);
+      }
+      
+      if (!fbp) {
+        fbp = localStorage.getItem('_fbp');
+        console.log('  - FBP do localStorage:', fbp);
+      }
+      
+      if (!fbc) {
+        console.error('❌ FBC NÃO ENCONTRADO!');
+        console.error('  - Usuário não passou pela presell com fbclid');
+        console.error('  - Ou cookies foram bloqueados');
+      }
+      
+      if (!fbp) {
+        fbp = 'fb.1.' + Date.now() + '.' + Math.random().toString(36).substr(2, 9);
+        console.log('  - FBP criado agora:', fbp);
+      }
+      
+      console.log('✅ Resultado final:');
+      console.log('  - FBP:', fbp ? 'OK' : 'FALTANDO');
+      console.log('  - FBC:', fbc ? 'OK' : 'FALTANDO');
+      
+      return { fbp, fbc };
+    }
+    
+    function sendPurchaseEvent() {
+      if (purchaseEnviado) {
+        console.warn('⚠️ Purchase já enviado');
+        return;
+      }
+      
+      purchaseEnviado = true;
+      const eventId = 'purchase_' + Date.now() + '_' + Math.floor(Math.random()*100000);
+      const facebookIds = getFacebookBrowserId();
+      
+      console.log('💰 Enviando Purchase');
+      console.log('  - Valor:', VALOR_PRODUTO);
+      console.log('  - Produto:', NOME_PRODUTO);
+      console.log('  - Event ID:', eventId);
+      
+      // Pixel (Browser)
+      try {
+        if (typeof fbq !== 'undefined') {
+          fbq('track', 'Purchase', {
+            value: VALOR_PRODUTO,
+            currency: 'BRL',
+            content_name: NOME_PRODUTO
+          }, {
+            eventID: eventId
+          });
+          console.log('✅ Purchase Pixel enviado');
+        }
+      } catch (error) { 
+        console.error('❌ Erro Pixel:', error); 
+      }
+      
+      // Conversions API (Server)
+      fetch('/.netlify/functions/facebook-conversion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event_name: 'Purchase',
+          event_id: eventId,
+          fbp: facebookIds.fbp,
+          fbc: facebookIds.fbc,
+          user_agent: navigator.userAgent,
+          event_source_url: window.location.href,
+          custom_data: {
+            value: VALOR_PRODUTO,
+            currency: 'BRL',
+            content_name: NOME_PRODUTO
+          }
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          console.log('✅ Purchase Server-Side enviado!');
+        } else {
+          console.error('❌ Erro Server-Side:', data.error);
+        }
+      })
+      .catch(err => console.error('❌ Erro:', err));
+    }
+    
+    // Envia Purchase ao carregar
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', sendPurchaseEvent);
+    } else {
+      sendPurchaseEvent();
+    }
+  </script>
+</body>
+</html>
